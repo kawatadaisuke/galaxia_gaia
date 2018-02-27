@@ -95,9 +95,9 @@ vicoles=vicole[sindx]
 # pxs=pxs+center[0]
 # pys=pys+center[1]
 # pzs=pzs+center[2]
-vxs=vxs+center[3]
-vys=vys+center[4]
-vzs=vzs+center[5]
+# vxs=vxs+center[3]
+# vys=vys+center[4]
+# vzs=vzs+center[5]
 
 # output ascii data for test
 #f=open('testi-part.dat','w')
