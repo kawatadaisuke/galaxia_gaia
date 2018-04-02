@@ -30,7 +30,7 @@ c position and velocity of Sun
 c luminosity and colour
       double precision v,vi,Av
 c stellar parameter
-      double precision Teff,FeH,xlogg,lrp,ri,ro
+      double precision Teff,FeH,xlogg,lrp,ri,ro,Age
 c random seed
       integer idum,ndr    
 c observable
@@ -76,8 +76,11 @@ c *** output file
       open(60,file='../gaiaed-out.bin',status='unknown'
      &  ,form='unformatted')
 
+c      open(70,file='./test.dat',status='unknown')
       do j=0,np-1
-        read(50) alpha,delta,dist,mua,mud,vrad,Teff,xlogg,FeH,Av,vi,v
+        read(50) alpha,delta,dist,mua,mud,vrad,Teff,xlogg,FeH,Av
+     &     ,vi,v,Age
+c        write(70,'(2(1pE13.5))') Teff,xlogg
 c distance (pc) -> parallax (mas)
         xpi=1000.0d0/dist
 c         a(1): Equatorial heliocentric right ascension (units: radians)
@@ -119,9 +122,10 @@ c Table 3 of Jordi et al. (2010, A&A, 523, 48
         write(60) (a(i),i=1,6),(ao(i),i=1,6),(ae(i),i=1,6)
      &     ,(p(i),i=1,4),(po(i),i=1,4),(pe(i),i=1,4)
      &     ,(ap(i),i=1,4),(apo(i),i=1,4),(ape(i),i=1,4)
-     &     ,V,VI,GRVS
+     &     ,V,VI,GRVS,Age
       enddo
       close(60)
+c      close(70)
 
       stop
       end

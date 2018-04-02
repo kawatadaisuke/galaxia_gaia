@@ -35,7 +35,7 @@ print ' input Number of stars =',nset
 f.close()
 f=FortranFile(inputfiledb)
 i=0
-rdata=np.zeros((nset,45))
+rdata=np.zeros((nset,46))
 while i < nset:
   rdata[i,:]=f.readReals('d')
   i+=1
@@ -129,10 +129,11 @@ tbhdu = pyfits.BinTableHDU.from_columns([\
   pyfits.Column(name='e_logg',unit='(dex)',format='D',array=rdata[:,39]),\
   pyfits.Column(name='e_[Fe/H]',unit='(dex)',format='D',array=rdata[:,40]),\
   pyfits.Column(name='e_Av',unit='(mag)',format='D',array=rdata[:,41]),\
-# V,VI,GRVS
+# V,VI,GRVS,Age
   pyfits.Column(name='V',unit='(mag)',format='D',array=rdata[:,42]),\
   pyfits.Column(name='V-I',unit='(mag)',format='D',array=rdata[:,43]),\
   pyfits.Column(name='G_RVS',unit='(mag)',format='D',array=rdata[:,44]),\
+  pyfits.Column(name='Age',unit='(Gyr)',format='D',array=rdata[:,45]),\
 # GLON and GLAT only true
   pyfits.Column(name='GLON_true',unit='(degree)',format='D',array=GLON_true),\
   pyfits.Column(name='GLAT_true',unit='(degree)',format='D',array=GLAT_true),\

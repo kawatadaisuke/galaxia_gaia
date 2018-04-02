@@ -28,7 +28,7 @@ inputfile='../galaxia/galaxy1.ebf'
 outputfile='galaxy1eq.ebf'
 
 # magnitude limit
-vmaglim=20.0
+vmaglim=13.0
 
 # reading the data
 px=ebf.read(inputfile,'/px')
@@ -212,7 +212,7 @@ if flagubeasc:
   i=0
   while i < ns:
     print >>f, " %12.5e %12.5e %12.5e %12.5e %12.5e %12.5e %12.5e %12.5e %12.5e %12.5e %12.5e %12.5e %12.5e %12.5e %12.5e" %(alps[i],dels[i],diss[i],valps[i],vdels[i],vrads[i]
-   ,teffs[i],logg[i],fehs[i],avs[i],vicoles[i],vmages[i],vmages[i]-vicoles[i]
+   ,teffs[i],loggs[i],fehs[i],avs[i],vicoles[i],vmages[i],vmages[i]-vicoles[i]
    ,glatas[i],glonas[i])
     i+=1
   f.close()
@@ -225,7 +225,7 @@ if flagube:
   i=0
   while i < ns:
     staro=np.array([alps[i],dels[i],diss[i],valps[i],vdels[i],vrads[i]
-     ,teffs[i],logg[i],fehs[i],avs[i],vicoles[i],vmages[i]])
+      ,teffs[i],loggs[i],fehs[i],avs[i],vicoles[i],vmages[i],ages[i]])
     f.writeReals(staro,prec='d')
     i+=1
   f.close()
@@ -271,6 +271,7 @@ if flagplot:
 # hexbin plot
   plt.hexbin(vicoles,mvmags,bins='log',gridsize=200,cmap=cm.jet)
   plt.axis([-0.5,3.0,15.0,-10.0])
+#  plt.hexbin(np.log10(teffs),loggs,bins='log',gridsize=200,cmap=cm.jet)
 # labes
   plt.xlabel(r"$\rm M_V vs. V-I$",fontsize=12,fontname="serif")
 #plt.ylabel(r"$\rm M_V$",fontsize=12,fontname="serif")
