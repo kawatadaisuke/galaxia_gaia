@@ -386,6 +386,11 @@ c After Comissioning Nov 2014
 c Photometric Errors
       pe(1)=0.001*dsqrt(0.04895*z**2+1.8633*z+0.0001985)
       pe(1)=(pe(1)/dsqrt(70.d0))*factorL
+c from DR2 website
+      pe(1)=pe(1)*5.0d0
+      if(pe(1).lt.0.001d0) then
+        pe(1)=0.001d0
+      endif
 
       z=MAX(10**(0.4*(11.0-15.0)), 10**(0.4*(p(1)-15.0)))
 
@@ -396,12 +401,23 @@ c Photometric Errors
       sigBP=sigBP/dsqrt(70.d0) * factorL
       pe(3)=sigBP
       
+      
       a=-0.007597*vi**3+0.114126*vi**2-0.636628*vi+1.615927
       b=-0.003803*vi**3+0.057112*vi**2-0.318499*vi+1.783906
       c=-0.001923*vi**3+0.027352*vi**2-0.091569*vi-3.042268
       sigRP=0.001*dsqrt((10.**a)*(z**2)+(10.**b)*z+10.**c)
       sigRP=sigRP/dsqrt(70.d0)* factorL
       pe(4)=sigRP
+
+c from DR2 websie
+      pe(3)=pe(3)*5.0d0
+      if(pe(3).lt.0.001d0) then
+        pe(3)=0.001d0
+      endif
+      pe(4)=pe(4)*5.0d0
+      if(pe(4).lt.0.001d0) then
+        pe(4)=0.001d0
+      endif
 
 c     We assume there is no correlation among colours
       pe(2)=dsqrt(sigBP**2+sigRP**2) 
