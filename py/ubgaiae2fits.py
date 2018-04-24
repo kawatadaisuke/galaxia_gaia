@@ -20,11 +20,17 @@ rmax=100.0
 # magnitude limit
 vmaglim=20.0
 
+# flag to output with GaiaDR2 format
+flagGaiaDR2 = True
+
 # input file name
 inputfileint='gaiaei-out.bin'
 inputfiledb='gaiaed-out.bin'
 # output file
-outfile='galaxia_gaia.fits'
+if flagGaiaDR2 == False:
+    outfile='galaxia_gaia.fits'
+else:
+    outfile='galaxia_gaiadr2.fits'
 
 # reading ASCIIthe data
 # rdata=np.loadtxt('ubgaiae-out.dat')
@@ -81,7 +87,9 @@ Tpmllbb=bovy_coords.pmrapmdec_to_pmllpmbb(e_pmRA,e_pmDEC \
 e_pmGLON=Tpmllbb[:,0]
 e_pmGLAT=Tpmllbb[:,1]
 
-tbhdu = pyfits.BinTableHDU.from_columns([\
+# Normal output
+if flagGaiaDR2 == False:
+    tbhdu = pyfits.BinTableHDU.from_columns([\
   pyfits.Column(name='RA_true',unit='(degree)',format='D',array=rdata[:,0]),\
   pyfits.Column(name='DEC_true',unit='(degree)',format='D',array=rdata[:,1]),\
   pyfits.Column(name='Plx_true',unit='(mas)',format='D',array=rdata[:,2]),\
@@ -152,5 +160,70 @@ tbhdu = pyfits.BinTableHDU.from_columns([\
     array=e_pmGLON),\
   pyfits.Column(name='e_pmGLAT',unit='(mas/yr)',format='D',\
     array=e_pmGLAT)])
+else:
+    # Gaia DR2 format with only obs data
+    tbhdu = pyfits.BinTableHDU.from_columns([\
+  pyfits.Column(name='RA_true',unit='(degree)',format='D',array=rdata[:,0]),\
+  pyfits.Column(name='DEC_true',unit='(degree)',format='D',array=rdata[:,1]),\
+  pyfits.Column(name='Plx_true',unit='(mas)',format='D',array=rdata[:,2]),\
+  pyfits.Column(name='pmRA_true',unit='(mas/yr)',format='D',array=rdata[:,3]),\
+  pyfits.Column(name='pmDEC_true',unit='(mas/yr)',format='D',array=rdata[:,4]),\
+  pyfits.Column(name='HRV_true',unit='(km/s)',format='D',array=rdata[:,5]),\
+# observed
+  pyfits.Column(name='ra',unit='(degree)',format='D',array=rdata[:,6]),\
+  pyfits.Column(name='dec',unit='(degree)',format='D',array=rdata[:,7]),\
+  pyfits.Column(name='parallax',unit='(mas)',format='D',array=rdata[:,8]),\
+  pyfits.Column(name='pmra',unit='(mas/yr)',format='D',array=rdata[:,9]),\
+  pyfits.Column(name='pmdec',unit='(mas/yr)',format='D',array=rdata[:,10]),\
+  pyfits.Column(name='radial_velocity',unit='(km/s)',format='D',array=rdata[:,11]),\
+# error
+  pyfits.Column(name='ra_error',unit='(degree)',format='D',array=rdata[:,12]),\
+  pyfits.Column(name='dec_error',unit='(degree)',format='D',array=rdata[:,13]),\
+  pyfits.Column(name='parallax_error',unit='(mas)',format='D',array=rdata[:,14]),\
+  pyfits.Column(name='pmra_error',unit='(mas/yr)',format='D',array=rdata[:,15]),\
+  pyfits.Column(name='pmdec_error',unit='(mas/yr)',format='D',array=rdata[:,16]),\
+  pyfits.Column(name='radial_velocity_error',unit='(km/s)',format='D',array=rdata[:,17]),\
+# True
+  pyfits.Column(name='G_true',unit='(mag)',format='D',array=rdata[:,18]),\
+  pyfits.Column(name='G_BP_true',unit='(mag)',format='D',array=rdata[:,20]),\
+  pyfits.Column(name='G_RP_true',unit='(mag)',format='D',array=rdata[:,21]),\
+# Observed
+  pyfits.Column(name='phot_g_mean_mag',unit='(mag)',format='D',array=rdata[:,22]),\
+  pyfits.Column(name='phot_bp_mean_mag',unit='(mag)',format='D',array=rdata[:,24]),\
+  pyfits.Column(name='phot_rp_mean_mag',unit='(mag)',format='D',array=rdata[:,25]),\
+# no photometry error, because they should be with flux error
+# True
+  pyfits.Column(name='Teff_true',unit='(K)',format='D',array=rdata[:,30]),\
+  pyfits.Column(name='logg_true',unit='(dex)',format='D',array=rdata[:,31]),\
+  pyfits.Column(name='[Fe/H]_true',unit='(dex)',format='D',array=rdata[:,32]),\
+  pyfits.Column(name='Av_true',unit='(mag)',format='D',array=rdata[:,33]),\
+# Observed
+  pyfits.Column(name='teff_val',unit='(K)',format='D',array=rdata[:,34]),\
+  pyfits.Column(name='a_g_val',unit='(mag)',format='D',array=rdata[:,37]),\
+# no stellar parameter errors
+# V,VI,GRVS,Age
+  pyfits.Column(name='V',unit='(mag)',format='D',array=rdata[:,42]),\
+  pyfits.Column(name='V-I',unit='(mag)',format='D',array=rdata[:,43]),\
+  pyfits.Column(name='G_RVS',unit='(mag)',format='D',array=rdata[:,44]),\
+  pyfits.Column(name='Age',unit='(Gyr)',format='D',array=rdata[:,45]),\
+# GLON and GLAT only true
+  pyfits.Column(name='l',unit='(degree)',format='D',array=GLON_true),\
+  pyfits.Column(name='b',unit='(degree)',format='D',array=GLAT_true),\
+# pmGLON and pmGLAT true
+  pyfits.Column(name='pmGLON_true',unit='(mas/yr)',format='D',\
+                array=pmGLON_true),\
+  pyfits.Column(name='pmGLAT_true',unit='(mas/yr)',format='D',\
+                array=pmGLAT_true),\
+# observed
+  pyfits.Column(name='pmGLON_obs',unit='(mas/yr)',format='D',\
+                array=pmGLON_obs),\
+  pyfits.Column(name='pmGLAT_obs',unit='(mas/yr)',format='D',\
+                array=pmGLAT_obs),\
+# Errors
+  pyfits.Column(name='e_pmGLON',unit='(mas/yr)',format='D',\
+    array=e_pmGLON),\
+  pyfits.Column(name='e_pmGLAT',unit='(mas/yr)',format='D',\
+    array=e_pmGLAT)])
+
 tbhdu.writeto(outfile,clobber=True)
 
